@@ -11,6 +11,13 @@ import {
 } from "@mui/material";
 import Dropzone from "react-dropzone";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import {
+  useAuthLoginMutation,
+  useAuthRegisterMutation,
+} from "../../app/features/apiSlice/apiSlice";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../app/features/data";
+import { useNavigate } from "react-router-dom";
 const form = () => {
   const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -47,12 +54,59 @@ const form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const palette = theme.palette;
+  const [AuthLogin, { error, isSuccess, data }] = useAuthLoginMutation();
+  const [AuthRegister] = useAuthRegisterMutation();
 
   //handlers
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
-    if (isRegister) await register(values, onSubmitProps);
+    if (isRegister) {
+      await register(values, onSubmitProps);
+    }
+  };
+
+  const login = async (values, onSubmitProps) => {
+    const { email, password } = values;
+    const { data } = await AuthLogin({
+      email,
+      password,
+    });
+    const { token, user } = data;
+    onSubmitProps.resetForm();
+    if (token) {
+      dispatch(setLogin({ token, user }));
+      navigate("/home");
+    }
+  };
+
+  const register = async (values, onSubmitProps) => {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      picture,
+      location,
+      occupation,
+    } = values;
+    const NewUserdata = {
+      firstName,
+      lastName,
+      email,
+      password,
+      picturePath: picture.path,
+      location,
+      occupation,
+    };
+    const {data} = await AuthRegister(NewUserdata);
+    onSubmitProps.resetForm();
+    if(data){
+      setPageType("login");
+      navigate("/")
+    }
   };
 
   return (
