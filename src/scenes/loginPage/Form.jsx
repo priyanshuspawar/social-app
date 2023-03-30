@@ -70,11 +70,15 @@ const form = () => {
 
   const login = async (values, onSubmitProps) => {
     const { email, password } = values;
-    const { data } = await AuthLogin({
+    const response = await AuthLogin({
       email,
       password,
     });
-    const { token, user } = data;
+    if(response.error){
+      onSubmitProps.resetForm();
+      return response
+    }
+    const { token, user } = response.data;
     onSubmitProps.resetForm();
     if (token) {
       dispatch(setLogin({ token, user }));
@@ -92,16 +96,12 @@ const form = () => {
       location,
       occupation,
     } = values;
-    const NewUserdata = {
-      firstName,
-      lastName,
-      email,
-      password,
-      picturePath: picture.path,
-      location,
-      occupation,
-    };
-    const {data} = await AuthRegister(NewUserdata);
+    const formData = new FormData();
+    for (let value in values) {
+      formData.append(value, values[value]);
+    }
+    formData.append("picturePath", values.picture.name);
+    const {data} = await AuthRegister(formData);
     onSubmitProps.resetForm();
     if(data){
       setPageType("login");
