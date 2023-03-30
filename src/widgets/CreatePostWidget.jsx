@@ -17,6 +17,7 @@ const CreatePostWidget = ({ firstName, picturePath }) => {
       bgcolor={palette.background.alt}
       padding="1.5rem 1.5rem 0.75rem 1.5rem"
       borderRadius={"0.75rem"}
+      mb={"2rem"}
     >
       <Box display={"flex"} flexDirection={"row"} gap={"0.4rem"} mb={"0.8rem"}>
         <UserImage alt={firstName} image={picturePath} />

@@ -24,9 +24,12 @@ const authSlice = createSlice({
         },
         setFriends:(state,action)=>{
             state.user.friends= action.payload.user.friends;
+        },
+        setPosts:(state,action)=>{
+            state.posts= action.payload
         }
     }
 })
 
-export const {setMode,setLogin,setLogout,setFriends} = authSlice.actions;
+export const {setMode,setLogin,setLogout,setFriends,setPosts} = authSlice.actions;
 export default authSlice.reducer;

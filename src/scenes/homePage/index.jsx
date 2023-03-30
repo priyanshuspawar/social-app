@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar";
 import CreatePostWidget from "../../widgets/CreatePostWidget";
+import FeedPosts from "../../widgets/FeedPosts";
 import UserWidget from "../../widgets/UserWidget";
 
 const HomePage = () => {
@@ -27,11 +28,16 @@ const HomePage = () => {
         </Box>
         {/* Main section posts */}
         <Box
+          display={"flex"}
+          flexDirection="column"
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
+          {/* creation post */}
           <CreatePostWidget alt={firstName} picturePath={picturePath}/>
 
+          {/* feed */}
+          <FeedPosts/>
         </Box>
 
         {/* friend list and ads */}
