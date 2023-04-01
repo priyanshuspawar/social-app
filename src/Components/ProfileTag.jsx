@@ -4,6 +4,7 @@ import UserImage from "./UserImage";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { useAddRemoveFriendMutation } from "../app/features/apiSlice/apiSlice";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const ProfileTag = ({
   userPicturePath,
   firstName,
@@ -19,6 +20,7 @@ const ProfileTag = ({
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  const navigate = useNavigate();
 
   const [isFriend, setIsFriend] = useState(true);
   useEffect(() => {
@@ -50,6 +52,9 @@ const ProfileTag = ({
           color={main}
           variant="h5"
           fontWeight="500"
+          onClick={()=>{
+            navigate(`/profile/${friendId}`)
+          }}
           sx={{
             "&:hover": {
               color: palette.primary.light,

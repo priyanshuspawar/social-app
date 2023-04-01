@@ -10,7 +10,8 @@ import {
 import { useLikePostMutation } from "../app/features/apiSlice/apiSlice";
 import { useSelector } from "react-redux";
 const Post = ({
-  _id,
+  _id,  
+  // id of the user that owns this post
   userId,
   firstName,
   lastName,

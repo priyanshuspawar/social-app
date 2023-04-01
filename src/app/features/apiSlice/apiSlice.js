@@ -71,6 +71,13 @@ export const socialAppApi = createApi({
         method: "PATCH"
       }),
       invalidatesTags:["UserDetailsUpdated","PostUpdated"],
+    }),
+    getUserPost: builder.query({
+      query:({userId})=>({
+        url:`/posts/${userId}`,
+        method: "GET"
+      }),
+      invalidatesTags:["UserDetailsUpdated","PostUpdated"],
     })
     
   }),
@@ -83,5 +90,6 @@ export const {
   useGetFeedPostsQuery,
   useAddRemoveFriendMutation,
   useGetUserDetailsQuery,
-  useLikePostMutation
+  useLikePostMutation,
+  useGetUserPostQuery
 } = socialAppApi;

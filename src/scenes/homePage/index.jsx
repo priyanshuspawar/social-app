@@ -8,6 +8,7 @@ import UserWidget from "../../widgets/UserWidget";
 import { useGetUserDetailsQuery } from "../../app/features/apiSlice/apiSlice";
 import { setUserDetailsRefresh } from "../../app/features/data";
 import FriendList from "../../widgets/FriendList";
+import AdvertWidget from "../../widgets/AdvertWidget";
 
 
 const HomePage = () => {
@@ -15,7 +16,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const user = useSelector(state=>state.persistedReducer.user);
   const { isError, isLoading, isSuccess, data, error,isFetching } = useGetUserDetailsQuery({id: user._id})
-  const {firstName, picturePath} = user;
+  const {firstName, picturePath, _id} = user;
 
   useEffect(()=>{
     if (data&&isSuccess) {
@@ -38,7 +39,7 @@ const HomePage = () => {
         {/* profile section */}
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
 
-          <UserWidget/>
+          <UserWidget id={_id}/>
 
         </Box>
         {/* Main section posts */}
@@ -58,8 +59,8 @@ const HomePage = () => {
         {/* friend list and ads */}
         {isNonMobileScreens && 
         (<Box flexBasis="26%">
-          <FriendList/>
-          
+          <AdvertWidget/>
+          <FriendList friends={isSuccess?data.friends:undefined}/>
           
           </Box>)}
       </Box>

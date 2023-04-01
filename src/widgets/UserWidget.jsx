@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UserImage from "../Components/UserImage";
 
-const UserWidget = ({}) => {
+const UserWidget = ({data}) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.persistedReducer.token);
@@ -18,7 +18,6 @@ const UserWidget = ({}) => {
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
-
   const {
     firstName,
     lastName,
@@ -28,7 +27,7 @@ const UserWidget = ({}) => {
     impressions,
     picturePath,
     friends,
-  } = user;
+  } = data?data:user;
 
   return (
     <Box
