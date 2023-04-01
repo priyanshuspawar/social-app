@@ -1,4 +1,11 @@
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -24,7 +31,7 @@ const AttachmentsPanel = ({
   const { _id, firstName, lastName, location, picturePath } = useSelector(
     (state) => state.persistedReducer.user
   );
-
+  const isNonMobileScreens = useMediaQuery("(min-width: 500px)");
   const user = {
     userId: _id,
     firstName,
@@ -39,8 +46,6 @@ const AttachmentsPanel = ({
   function refreshPage() {
     window.location.reload(false);
   }
-
-
 
   const postButtonHandler = async () => {
     const newPostData = new FormData();
@@ -67,7 +72,7 @@ const AttachmentsPanel = ({
       refreshPage();
     }
   };
-
+  console.log(isNonMobileScreens)
   return (
     <Box>
       {/* dropzone */}
@@ -134,21 +139,23 @@ const AttachmentsPanel = ({
           ) : (
             <ImageOutlined sx={{ color: `${palette.neutral.main}` }} />
           )}
-          <Typography color={isImageRequied ? "red" : undefined}>
-            {isImageRequied ? "Remove" : "Image"}
-          </Typography>
+          {isNonMobileScreens && (
+            <Typography color={isImageRequied ? "red" : undefined}>
+              {isImageRequied ? "Remove" : "Image"}
+            </Typography>
+          )}
         </Box>
-        <Box gap={"1px"} display={"flex"}>
+        <Box gap={"1px"} sx={{ display: "flex" }}>
           <GifBoxOutlined sx={{ color: `${palette.neutral.main}` }} />
-          <Typography>Clip</Typography>
+          {isNonMobileScreens && <Typography>Clip</Typography>}
         </Box>
-        <Box gap={"1px"} display={"flex"}>
+        <Box gap={"1px"} sx={{ display: "flex" }}>
           <AttachFileOutlined sx={{ color: `${palette.neutral.main}` }} />
-          <Typography>Attachment</Typography>
+          {isNonMobileScreens && <Typography>Attachment</Typography>}
         </Box>
-        <Box gap={"1px"} display={"flex"}>
+        <Box gap={"1px"} display={"flex"} sx={{ display: "flex" }}>
           <MicOutlined sx={{ color: `${palette.neutral.main}` }} />
-          <Typography>Audio</Typography>
+          {isNonMobileScreens && <Typography>Audio</Typography>}
         </Box>
         <Button
           disabled={!isButtonDisabled}

@@ -11,6 +11,7 @@ const FriendList = ({friends}) => {
     bgcolor={palette.background.alt}
     padding="1rem 1.5rem 0.75rem 1.5rem"
     borderRadius={"0.75rem"}
+    mb={"2rem"}
     >
         <Typography mb={"0.5rem"} variant='h5' fontWeight="500">
             Friend List

@@ -1,4 +1,11 @@
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  IconButton,
+  InputBase,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 import React, { useEffect, useState } from "react";
 import ProfileTag from "./ProfileTag";
 import {
@@ -9,8 +16,9 @@ import {
 } from "@mui/icons-material";
 import { useLikePostMutation } from "../app/features/apiSlice/apiSlice";
 import { useSelector } from "react-redux";
+import UserImage from "./UserImage";
 const Post = ({
-  _id,  
+  _id,
   // id of the user that owns this post
   userId,
   firstName,
@@ -25,10 +33,12 @@ const Post = ({
   key,
 }) => {
   const { palette } = useTheme();
-  const { _id: LoggedUserId } = useSelector(
+  const { _id: LoggedUserId,picturePath:loggedUserPicture } = useSelector(
     (state) => state.persistedReducer.user
   );
   const [likePost] = useLikePostMutation();
+  const [commentFieldValue,setCommentFieldValue] = useState("");
+  const [isCommentButtonShowing,setCommentButtonShowing] =useState(false);
   const numOfLikes = likes == undefined ? "" : `${Object.keys(likes).length}`;
   const [isPostLiked, setIsPostLiked] = useState(false);
 
@@ -79,8 +89,8 @@ const Post = ({
       <Box
         display={"flex"}
         justifyContent={"space-between"}
-        p={"0.8rem 0.5rem 0rem 0.5rem"}
         alignItems={"center"}
+        pt={"1rem"}
       >
         <Box display={"flex"} gap={"0.8rem"}>
           <Box display={"flex"} alignItems={"center"}>
@@ -94,6 +104,24 @@ const Post = ({
           </IconButton>
         </Box>
         <ShareOutlined />
+      </Box>
+
+      {/* write comment */}
+
+      <Box display={"flex"} sx={{boxShadow:"1"}} py={"0.2rem"} borderRadius={"4rem"} alignItems={"center"} px={"0.4rem"}>
+        <UserImage image={loggedUserPicture} size="25px"/>
+        <InputBase
+          sx={{flexGrow:1}}
+          placeholder="Add a comment"
+          value={commentFieldValue}
+          onChange={(event)=>{setCommentFieldValue(event.target.value)}}
+          onFocus={() => {
+            setCommentButtonShowing(true);
+          }}
+        />
+        {isCommentButtonShowing&&<Typography color={palette.neutral.main} fontSize={"0.7rem"}>
+          POST
+        </Typography>}
       </Box>
     </Box>
   );

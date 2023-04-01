@@ -38,6 +38,7 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
+          {!isNonMobileScreens && <FriendList friends={data.friends}/>}
           <UserPosts userId={userId}/>
         </Box>
 
