@@ -8,6 +8,7 @@ const FeedPosts = () => {
   const postData = useSelector((state) => state.persistedReducer.posts);
   const dispatch = useDispatch();
   const { isError, isLoading, isSuccess, data, error,isFetching } = useGetFeedPostsQuery();
+  // const fri = friends;
   useEffect(() => {
     dispatch(setPosts(data));
   }, [isSuccess]);
@@ -20,8 +21,10 @@ const FeedPosts = () => {
           firstName,
           lastName,
           location,
+          likes,
           description,
           picturePath,
+          userPicturePath,
           comments,
           createdAt,
         }) => {
@@ -36,7 +39,9 @@ const FeedPosts = () => {
               picturePath={picturePath}
               comments={comments}
               createdAt={createdAt}
+              likes={likes}
               key={_id}
+              userPicturePath={userPicturePath}
             />
           );
         }

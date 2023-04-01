@@ -7,7 +7,7 @@ import UserImage from "../Components/UserImage";
 
 const CreatePostWidget = ({ firstName, picturePath }) => {
   const { palette } = useTheme();
-  const [description, setDescription] = useState(null);
+  const [description, setDescription] = useState("");
   const [picture, setPicture] = useState(null);
   const [uploaded, setuploaded] = useState(null);
 

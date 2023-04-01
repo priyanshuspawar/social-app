@@ -1,11 +1,11 @@
 import { Avatar, Box } from "@mui/material";
 import React from "react";
 
-const UserImage = ({ alt, image }) => {
+const UserImage = ({ alt, image, size="60px"}) => {
   return (
     <Box mr={"0.8rem"}>
       <Avatar
-        sx={{ width: 60, height: 60 }}
+        sx={{ width: size, height: size }}
         alt={alt}
         src={`http://localhost:3500/assets/${image}`}
       />
