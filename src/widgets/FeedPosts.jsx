@@ -29,6 +29,7 @@ const FeedPosts = () => {
           createdAt,
         }) => {
           return (
+            <Box key={_id}>
             <Post
               _id={_id}
               userId={userId}
@@ -40,9 +41,10 @@ const FeedPosts = () => {
               comments={comments}
               createdAt={createdAt}
               likes={likes}
-              key={_id}
+              // key={_id}
               userPicturePath={userPicturePath}
             />
+            </Box>
           );
         }
       )}

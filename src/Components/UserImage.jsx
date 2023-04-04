@@ -7,7 +7,7 @@ const UserImage = ({ alt, image, size="60px"}) => {
       <Avatar
         sx={{ width: size, height: size }}
         alt={alt}
-        src={`http://localhost:3500/assets/${image}`}
+        src={image&&`http://localhost:3500/assets/${image}`}
       />
     </Box>
   );

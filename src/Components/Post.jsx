@@ -4,18 +4,21 @@ import {
   useTheme,
   IconButton,
   InputBase,
+  Divider,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import React, { useEffect, useState } from "react";
 import ProfileTag from "./ProfileTag";
 import {
   ChatBubbleOutlineOutlined,
+  ChatBubble,
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { useLikePostMutation } from "../app/features/apiSlice/apiSlice";
+import { useLikePostMutation, usePostCommentMutation } from "../app/features/apiSlice/apiSlice";
 import { useSelector } from "react-redux";
+import Comment from "./Comment";
 import UserImage from "./UserImage";
 const Post = ({
   _id,
@@ -41,6 +44,8 @@ const Post = ({
   const [isCommentButtonShowing,setCommentButtonShowing] =useState(false);
   const numOfLikes = likes == undefined ? "" : `${Object.keys(likes).length}`;
   const [isPostLiked, setIsPostLiked] = useState(false);
+  const [isCommentSectionHidden,setIsCommentSectionHidden] = useState(true);
+  const [postComment]=usePostCommentMutation();
 
   useEffect(() => {
     if (likes) {
@@ -54,6 +59,12 @@ const Post = ({
       setIsPostLiked(!isPostLiked);
     }
   };
+  const postCommentHandler = async () => {
+    const response = await postComment({comment:commentFieldValue,id:_id,userId:LoggedUserId});
+    if(response.data){
+      setCommentFieldValue("");
+    }
+  }
   return (
     <Box
       bgcolor={palette.background.alt}
@@ -99,17 +110,26 @@ const Post = ({
             </IconButton>
             <Typography>{numOfLikes}</Typography>
           </Box>
-          <IconButton>
-            <ChatBubbleOutlineOutlined />
+          <IconButton onClick={()=>{setIsCommentSectionHidden(!isCommentSectionHidden)}}>
+           {isCommentSectionHidden? <ChatBubbleOutlineOutlined />:<ChatBubble/>}
           </IconButton>
         </Box>
         <ShareOutlined />
       </Box>
 
+      {/* comment section */}
+      {!isCommentSectionHidden&&
+        <Box>
+          {comments.map((comment,index)=><Box key={index}><Comment comments={comment}/></Box>)}
+          <Divider sx={{my:"0.7rem"}}/>
+        </Box>
+      }
+
+
       {/* write comment */}
 
       <Box display={"flex"} sx={{boxShadow:"1"}} py={"0.2rem"} borderRadius={"4rem"} alignItems={"center"} px={"0.4rem"}>
-        <UserImage image={loggedUserPicture} size="25px"/>
+        <UserImage image={loggedUserPicture} size="30px"/>
         <InputBase
           sx={{flexGrow:1}}
           placeholder="Add a comment"
@@ -119,7 +139,11 @@ const Post = ({
             setCommentButtonShowing(true);
           }}
         />
-        {isCommentButtonShowing&&<Typography color={palette.neutral.main} fontSize={"0.7rem"}>
+        {isCommentButtonShowing&&<Typography color={palette.neutral.main} sx={{cursor:"pointer"}} fontSize={"0.7rem"} onClick={()=>{
+          if(commentFieldValue.length>0){
+            postCommentHandler();
+          }
+        }}>
           POST
         </Typography>}
       </Box>

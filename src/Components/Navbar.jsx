@@ -9,7 +9,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import {
   Search,
@@ -24,30 +24,28 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setMode } from "../app/features/data";
+import { setLogout } from "../app/features/data";
 
 const Navbar = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-
+  const user = useSelector((state) => state.persistedReducer.user);
 
   //dropdown constants
-  const [anchorEl,setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event)=>{
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  }
-  const handleClose = ()=>{
+  };
+  const handleClose = () => {
     setAnchorEl(null);
-  }
-
+  };
 
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
-  const background = theme.palette.background.default;
-  const primaryLight = theme.palette.primary.light;
+  // const background = theme.palette.background.default;
+  // const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
   // const fullName = `${user.firstName} ${user.lastName}`;
@@ -71,8 +69,15 @@ const Navbar = () => {
     >
       <Typography
         color={"primary"}
-        sx={{fontWeight: "bold", flexGrow:{sm:1,xs:1,lg:"initial",md:"initial"}}}
+        sx={{
+          fontWeight: "bold",
+          flexGrow: { sm: 1, xs: 1, lg: "initial", md: "initial" },
+          cursor: "pointer"
+        }}
         fontSize="clamp(1.5rem,1.8rem,1.5rem)"
+        onClick={() => {
+          navigate("/home");
+        }}
       >
         SocialPedia
       </Typography>
@@ -87,16 +92,16 @@ const Navbar = () => {
           p: "0.1rem 1.1rem",
           flexDirection: "row",
           alignItems: "center",
-          ml:{xl: "18rem"}
+          ml: { xl: "18rem" },
         }}
         // flexGrow={1}
       >
-        <InputBase placeholder="Search..."/>
+        <InputBase placeholder="Search..." />
         <IconButton>
           <Search />
         </IconButton>
       </Box>
-      <Box gap={"2rem"} sx={{ display: "flex", alignItems: "center"}}>
+      <Box gap={"2rem"} sx={{ display: "flex", alignItems: "center" }}>
         <IconButton onClick={modeHandler}>
           {theme.palette.mode === "dark" ? (
             <DarkMode sx={{ fontSize: "25px" }} />
@@ -114,59 +119,63 @@ const Navbar = () => {
           <Help sx={{ color: dark, fontSize: "25px" }} />
         </IconButton>
       </Box>
-      
 
       {/* dop down menu */}
 
       <Box display={"flex"}>
-      <Tooltip title="Account settings">
+        <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
-            aria-controls={open ? 'account-menu' : undefined}
+            aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
+            aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 30, height: 30,bgcolor:dark }}>M</Avatar>
+            <Avatar
+              sx={{ width: 30, height: 30, bgcolor: dark }}
+              src={`http://localhost:3500/assets/${user.picturePath}`}
+              alt={user.firstName}
+            />
           </IconButton>
         </Tooltip>
-      
 
-
-
-      <Menu
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        onClick={handleClose}
-        id="account-menu"
-        open={open}
-        PaperProps={{
-          elevation:0,
-          sx:{
-            overflow: "hidden",
-            filter: "drop-shadow(0px, 2px , 8px rgba(0,0,0,0.32))",
-            "& .MuiAvatar-root":{
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
+        <Menu
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          onClick={handleClose}
+          id="account-menu"
+          open={open}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: "hidden",
+              filter: "drop-shadow(0px, 2px , 8px rgba(0,0,0,0.32))",
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
             },
-          }
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          Logout
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          Notfications
-        </MenuItem>
-      </Menu>
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem
+            onClick={() => {
+              navigate(`/profile/${user._id}`)
+              handleClose();
+            }}
+          >
+            <Avatar /> My Profile
+          </MenuItem>
+          <MenuItem onClick={()=>{
+            dispatch(setLogout())
+            navigate("/");
+            handleClose()}}>Logout</MenuItem>
+          <MenuItem onClick={handleClose}>Notfications</MenuItem>
+        </Menu>
       </Box>
     </Box>
   );

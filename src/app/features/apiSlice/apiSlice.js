@@ -78,6 +78,14 @@ export const socialAppApi = createApi({
         method: "GET"
       }),
       invalidatesTags:["UserDetailsUpdated","PostUpdated"],
+    }),
+    postComment: builder.mutation({
+      query:({id,userId,comment})=>({
+        url:`/posts/comment/${id}/${userId}`,
+        method:"PATCH",
+        body:{comment}
+      }),
+      invalidatesTags:["UserDetailsUpdated","PostUpdated"],
     })
     
   }),
@@ -91,5 +99,6 @@ export const {
   useAddRemoveFriendMutation,
   useGetUserDetailsQuery,
   useLikePostMutation,
-  useGetUserPostQuery
+  useGetUserPostQuery,
+  usePostCommentMutation
 } = socialAppApi;

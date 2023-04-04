@@ -26,6 +26,7 @@ const UserPosts = ({ userId }) => {
               createdAt,
             }) => {
               return (
+                <Box key={_id}>
                 <Post
                   _id={_id}
                   userId={userId}
@@ -40,6 +41,7 @@ const UserPosts = ({ userId }) => {
                   key={_id}
                   userPicturePath={userPicturePath}
                 />
+                </Box>
               );
             }
           )

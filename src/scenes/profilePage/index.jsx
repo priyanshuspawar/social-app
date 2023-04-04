@@ -46,7 +46,7 @@ const ProfilePage = () => {
         {isNonMobileScreens && 
         (<Box flexBasis="26%">
           <AdvertWidget/>
-          <FriendList friends={data.friends}/>
+          <FriendList friends={data.friends} title={`${data.firstName} ${data.lastName}'s Friend List`}/>
           </Box>)}
 
       </Box>}

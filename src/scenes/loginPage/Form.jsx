@@ -69,41 +69,36 @@ const form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
+    console.log(onSubmitProps);
     const { email, password } = values;
     const response = await AuthLogin({
       email,
       password,
     });
     if(response.error){
-      onSubmitProps.resetForm();
+      onSubmitProps.setErrors({apiError:response.error.data.message});
       return response
     }
     const { token, user } = response.data;
-    onSubmitProps.resetForm();
     if (token) {
+      onSubmitProps.resetForm();
       dispatch(setLogin({ token, user }));
       navigate("/home");
     }
   };
 
   const register = async (values, onSubmitProps) => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      picture,
-      location,
-      occupation,
-    } = values;
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
-    const {data} = await AuthRegister(formData);
-    onSubmitProps.resetForm();
+    const {data,error} = await AuthRegister(formData);
+    if(error){
+      onSubmitProps.setErrors({apiError:error.message});
+    }
     if(data){
+      onSubmitProps.resetForm();
       setPageType("login");
       navigate("/")
     }
@@ -135,6 +130,8 @@ const form = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              
+              {errors.apiError&&<Typography sx={{ gridColumn: "span 4", color:"red" }}>{errors.apiError}</Typography>}
               {isLogin && (
                 <>
                   <TextField

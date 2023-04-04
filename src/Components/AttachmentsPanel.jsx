@@ -43,10 +43,6 @@ const AttachmentsPanel = ({
 
   const isButtonDisabled = isDescriptionNotEmpty && fieldValue.picture;
 
-  function refreshPage() {
-    window.location.reload(false);
-  }
-
   const postButtonHandler = async () => {
     const newPostData = new FormData();
     for (let i in user) {
@@ -69,10 +65,9 @@ const AttachmentsPanel = ({
       setFieldValue({ picture: null });
       setImageRequired(false);
       // setUploaded(true);
-      refreshPage();
     }
   };
-  console.log(isNonMobileScreens)
+
   return (
     <Box>
       {/* dropzone */}

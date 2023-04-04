@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import ProfileTagForList from '../Components/ProfileTagForList';
 
-const FriendList = ({friends}) => {
+const FriendList = ({friends,title="Friend List"}) => {
   const {palette}=useTheme();
   // const {friends} = useSelector(state=>state.persistedReducer.user); 
     return (
@@ -14,7 +14,7 @@ const FriendList = ({friends}) => {
     mb={"2rem"}
     >
         <Typography mb={"0.5rem"} variant='h5' fontWeight="500">
-            Friend List
+            {title}
         </Typography>
         <Box display={"flex"} flexDirection={"column"} gap={"0.5rem"}>
         {friends?friends.map((e)=>
