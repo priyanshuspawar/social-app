@@ -82,17 +82,16 @@ const Post = ({
         lastName={lastName}
       />
 
-      <Typography color={palette.neutral.main} sx={{ mt: "1rem" }}>
+      <Typography color={palette.neutral.main} sx={{ my: "1rem" }}>
         {description}
       </Typography>
 
       {/* image */}
-      <Box display={"flex"}>
+      <Box display={"flex"} width={"100%"} height={"500px"} sx={{justifyContent:"center"}}>
         <img
-          width="100%"
-          height="auto"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+          // style={{ borderRadius: "0.75rem",objectPosition:"center",marginTop: "0.75rem" }}
+          style={{height: "100%",width: "100%",objectFit:"cover",objectPosition:"center",borderRadius:"0.75rem"}}
           src={`https://socialserver-ql45.onrender.com/assets/${picturePath}`}
         />
       </Box>
