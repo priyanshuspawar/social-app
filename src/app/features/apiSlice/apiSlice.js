@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3500",
+  baseUrl: "https://socialserver-ql45.onrender.com",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().persistedReducer.token;
     if (token) {
@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
 
 export const socialAppApi = createApi({
   reducerPath: "socialApi",
-  // baseQuery : fetchBaseQuery({baseUrl:" http://localhost:3500"}),
+  // baseQuery : fetchBaseQuery({baseUrl:" https://socialserver-ql45.onrender.com"}),
   baseQuery,
   tagTypes: ["UserDetailsUpdated","PostUpdated"],
   endpoints: (builder) => ({

@@ -134,7 +134,7 @@ const Navbar = () => {
           >
             <Avatar
               sx={{ width: 30, height: 30, bgcolor: dark }}
-              src={`http://localhost:3500/assets/${user.picturePath}`}
+              src={`https://socialserver-ql45.onrender.com/assets/${user.picturePath}`}
               alt={user.firstName}
             />
           </IconButton>

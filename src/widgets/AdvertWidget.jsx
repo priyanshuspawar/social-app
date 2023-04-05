@@ -31,7 +31,7 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="http://localhost:3500/assets/rareBeauty.jpg"
+        src="https://socialserver-ql45.onrender.com/assets/rareBeauty.jpg"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
 
