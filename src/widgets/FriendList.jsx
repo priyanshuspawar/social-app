@@ -17,10 +17,13 @@ const FriendList = ({friends,title="Friend List"}) => {
             {title}
         </Typography>
         <Box display={"flex"} flexDirection={"column"} gap={"0.5rem"}>
-        {friends?friends.map((e)=>
+        {friends.length==0&&<Typography>No Friends yet</Typography>}
+        {friends?friends.map((e,i)=>
         {
             return(
+                <Box key={i}>
                 <ProfileTagForList userId={e}/>
+                </Box>
                 )
         }):<Typography>Loading ...</Typography>}
         </Box>

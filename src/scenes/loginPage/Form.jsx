@@ -57,7 +57,7 @@ const form = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const palette = theme.palette;
-  const [AuthLogin, { error, isSuccess, data }] = useAuthLoginMutation();
+  const [AuthLogin] = useAuthLoginMutation();
   const [AuthRegister] = useAuthRegisterMutation();
 
   //handlers
