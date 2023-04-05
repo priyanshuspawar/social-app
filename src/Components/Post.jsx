@@ -6,7 +6,7 @@ import {
   InputBase,
   Divider,
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import ProfileTag from "./ProfileTag";
 import {
@@ -16,7 +16,10 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { useLikePostMutation, usePostCommentMutation } from "../app/features/apiSlice/apiSlice";
+import {
+  useLikePostMutation,
+  usePostCommentMutation,
+} from "../app/features/apiSlice/apiSlice";
 import { useSelector } from "react-redux";
 import Comment from "./Comment";
 import UserImage from "./UserImage";
@@ -36,16 +39,16 @@ const Post = ({
   key,
 }) => {
   const { palette } = useTheme();
-  const { _id: LoggedUserId,picturePath:loggedUserPicture } = useSelector(
+  const { _id: LoggedUserId, picturePath: loggedUserPicture } = useSelector(
     (state) => state.persistedReducer.user
   );
   const [likePost] = useLikePostMutation();
-  const [commentFieldValue,setCommentFieldValue] = useState("");
-  const [isCommentButtonShowing,setCommentButtonShowing] =useState(false);
+  const [commentFieldValue, setCommentFieldValue] = useState("");
+  const [isCommentButtonShowing, setCommentButtonShowing] = useState(false);
   const numOfLikes = likes == undefined ? "" : `${Object.keys(likes).length}`;
   const [isPostLiked, setIsPostLiked] = useState(false);
-  const [isCommentSectionHidden,setIsCommentSectionHidden] = useState(true);
-  const [postComment]=usePostCommentMutation();
+  const [isCommentSectionHidden, setIsCommentSectionHidden] = useState(true);
+  const [postComment] = usePostCommentMutation();
 
   useEffect(() => {
     if (likes) {
@@ -60,11 +63,15 @@ const Post = ({
     }
   };
   const postCommentHandler = async () => {
-    const response = await postComment({comment:commentFieldValue,id:_id,userId:LoggedUserId});
-    if(response.data){
+    const response = await postComment({
+      comment: commentFieldValue,
+      id: _id,
+      userId: LoggedUserId,
+    });
+    if (response.data) {
       setCommentFieldValue("");
     }
-  }
+  };
   return (
     <Box
       bgcolor={palette.background.alt}
@@ -87,11 +94,22 @@ const Post = ({
       </Typography>
 
       {/* image */}
-      <Box display={"flex"} width={"100%"} height={"500px"} sx={{justifyContent:"center"}}>
+      <Box
+        display={"flex"}
+        width={"100%"}
+        height={"500px"}
+        sx={{ justifyContent: "center" }}
+      >
         <img
           alt="post"
           // style={{ borderRadius: "0.75rem",objectPosition:"center",marginTop: "0.75rem" }}
-          style={{height: "100%",width: "100%",objectFit:"cover",objectPosition:"center",borderRadius:"0.75rem"}}
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            borderRadius: "0.75rem",
+          }}
           src={`https://socialserver-ql45.onrender.com/assets/${picturePath}`}
         />
       </Box>
@@ -109,42 +127,79 @@ const Post = ({
             </IconButton>
             <Typography>{numOfLikes}</Typography>
           </Box>
-          <IconButton onClick={()=>{setIsCommentSectionHidden(!isCommentSectionHidden)}}>
-           {isCommentSectionHidden? <ChatBubbleOutlineOutlined />:<ChatBubble/>}
+          <IconButton
+            onClick={() => {
+              setIsCommentSectionHidden(!isCommentSectionHidden);
+            }}
+          >
+            {isCommentSectionHidden ? (
+              <ChatBubbleOutlineOutlined />
+            ) : (
+              <ChatBubble />
+            )}
           </IconButton>
         </Box>
         <ShareOutlined />
       </Box>
 
+      {/* upload time */}
+      <Box display={"flex"} px={"0.6rem"} mb={"0.4rem"}>
+        <Typography color={palette.neutral.medium} fontSize={"0.65rem"}>
+          {moment(createdAt).fromNow()}
+        </Typography>
+      </Box>
       {/* comment section */}
-      {!isCommentSectionHidden&&
+      {!isCommentSectionHidden && (
         <Box>
-          {comments.map((comment,index)=><Box key={index}><Comment comments={comment}/></Box>)}
-          <Divider sx={{my:"0.7rem"}}/>
+          {comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <Box key={index}>
+                <Comment comments={comment} />
+              </Box>
+            ))
+          ) : (
+            <Typography>No comments yet</Typography>
+          )}
+          <Divider sx={{ my: "0.7rem" }} />
         </Box>
-      }
-
+      )}
 
       {/* write comment */}
 
-      <Box display={"flex"} sx={{boxShadow:"1"}} py={"0.2rem"} borderRadius={"4rem"} alignItems={"center"} px={"0.4rem"}>
-        <UserImage image={loggedUserPicture} size="30px"/>
+      <Box
+        display={"flex"}
+        sx={{ boxShadow: "1" }}
+        py={"0.2rem"}
+        borderRadius={"4rem"}
+        alignItems={"center"}
+        px={"0.4rem"}
+      >
+        <UserImage image={loggedUserPicture} size="30px" />
         <InputBase
-          sx={{flexGrow:1}}
+          sx={{ flexGrow: 1 }}
           placeholder="Add a comment"
           value={commentFieldValue}
-          onChange={(event)=>{setCommentFieldValue(event.target.value)}}
+          onChange={(event) => {
+            setCommentFieldValue(event.target.value);
+          }}
           onFocus={() => {
             setCommentButtonShowing(true);
           }}
         />
-        {isCommentButtonShowing&&<Typography color={palette.neutral.main} sx={{cursor:"pointer"}} fontSize={"0.7rem"} onClick={()=>{
-          if(commentFieldValue.length>0){
-            postCommentHandler();
-          }
-        }}>
-          POST
-        </Typography>}
+        {isCommentButtonShowing && (
+          <Typography
+            color={palette.neutral.main}
+            sx={{ cursor: "pointer" }}
+            fontSize={"0.7rem"}
+            onClick={() => {
+              if (commentFieldValue.length > 0) {
+                postCommentHandler();
+              }
+            }}
+          >
+            POST
+          </Typography>
+        )}
       </Box>
     </Box>
   );
