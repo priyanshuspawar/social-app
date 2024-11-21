@@ -5,10 +5,7 @@ const LoginPage = () => {
   const theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   return (
-    <Box
-      width="100%"
-      textAlign="center"
-    >
+    <Box width="100%" textAlign="center">
       <Box
         bgcolor={theme.palette.background.alt}
         width={"100%"}
@@ -19,7 +16,7 @@ const LoginPage = () => {
           fontSize="32px"
           color={"primary"}
         >
-          Sociopedia
+          Squawk
         </Typography>
       </Box>
       <Box
@@ -31,7 +28,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to Socipedia, the Social Media for Sociopaths!
+          Welcome to Squawk, the Social Media for Sociopaths!
         </Typography>
         <Form />
       </Box>

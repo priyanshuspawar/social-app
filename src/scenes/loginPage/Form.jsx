@@ -18,6 +18,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../app/features/data";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const form = () => {
   const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -75,9 +76,9 @@ const form = () => {
       email,
       password,
     });
-    if(response.error){
-      onSubmitProps.setErrors({apiError:response.error.data.message});
-      return response
+    if (response.error) {
+      onSubmitProps.setErrors({ apiError: response.error.data.message });
+      return response;
     }
     const { token, user } = response.data;
     if (token) {
@@ -93,14 +94,25 @@ const form = () => {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
-    const {data,error} = await AuthRegister(formData);
-    if(error){
-      onSubmitProps.setErrors({apiError:error.message});
+    const { data, error } = await AuthRegister(formData);
+    if (error) {
+      onSubmitProps.setErrors({ apiError: error.message });
     }
-    if(data){
+    if (data) {
       onSubmitProps.resetForm();
+      toast.success("User Registerd", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
       setPageType("login");
-      navigate("/")
+      navigate("/");
     }
   };
 
@@ -130,8 +142,11 @@ const form = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              
-              {errors.apiError&&<Typography sx={{ gridColumn: "span 4", color:"red" }}>{errors.apiError}</Typography>}
+              {errors.apiError && (
+                <Typography sx={{ gridColumn: "span 4", color: "red" }}>
+                  {errors.apiError}
+                </Typography>
+              )}
               {isLogin && (
                 <>
                   <TextField
