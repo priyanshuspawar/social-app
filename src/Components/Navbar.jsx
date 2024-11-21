@@ -79,7 +79,7 @@ const Navbar = () => {
           navigate("/home");
         }}
       >
-        SocialPedia
+        Squawk
       </Typography>
 
       {/* input field */}
